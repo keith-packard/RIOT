@@ -41,6 +41,10 @@
 #include <inttypes.h>
 #endif
 
+#ifdef PICOLIBC_TLS
+#include <picotls.h>
+#endif
+
 volatile int sched_num_threads = 0;
 
 volatile unsigned int sched_context_switch_request;
@@ -119,6 +123,9 @@ int __attribute__((used)) sched_run(void)
     next_thread->status = STATUS_RUNNING;
     sched_active_pid = next_thread->pid;
     sched_active_thread = (volatile thread_t *) next_thread;
+#ifdef PICOLIBC_TLS
+    _set_tls(next_thread->tls);
+#endif
 
 #ifdef MODULE_MPU_STACK_GUARD
     mpu_configure(
