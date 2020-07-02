@@ -1,7 +1,8 @@
 
-USEMODULE += newlib_nano
-
+ifneq (,$(filter picolibc,$(USEMODULE)))
 USEMODULE += newlib_syscalls_fe310
+endif
+
 USEMODULE += sifive_drivers_fe310
 
 USEMODULE += periph
